@@ -4,6 +4,8 @@ import logo from '../assets/logo.svg'
 import { Link } from 'react-router-dom'
 import {useDispatch, useSelector} from "react-redux";
 import {selectTotalQty, setOpenCart} from "../app/CartSlice.js";
+import { setOpenLike } from '../app/likeSlice';
+import { selectTotalLikeQty } from './../app/likeSlice';
 
 const Navbar = ({search}) => {
 
@@ -13,11 +15,16 @@ const Navbar = ({search}) => {
   const dispatch = useDispatch()
 
   const totalQTY = useSelector(selectTotalQty)
+  const totalLikeQty = useSelector(selectTotalLikeQty)
 
   const onCartToggle = ()=>{
     dispatch(setOpenCart({
       cartState: true
     }))
+  }
+
+  const onLikeToggle = ()=>{
+    dispatch(setOpenLike({likeState: true}))
   }
   
   const onNavScroll = ()=>{
@@ -46,7 +53,7 @@ const Navbar = ({search}) => {
         <Link to={'/'}>
           <button type='button' className='flex items-center' >
             <img src={logo} alt="logo/img"
-                 className={`h-16 h-auto ${navState && 'filter brightness-0'}`}
+                className={`h-16 h-auto ${navState && 'filter brightness-0'}`}
             />
           </button>
         </Link>
@@ -69,7 +76,18 @@ const Navbar = ({search}) => {
             </Link>
           </li>
           <li className='grid items-center'>
-            <HeartIcon className={`icon-style ${navState && 'text-slate-900 transition-all duration-300'}`}/>
+            <button onClick={onLikeToggle} className='border-none outline-none active:scale-110 transition-all duration-300 relative'>
+              <HeartIcon className={`icon-style ${navState && 'text-slate-900 transition-all duration-300'}`}/>
+              <div className={`absolute top-4 right-0
+                shadow w-4 h-4 text-[0.65rem] leading-tight 
+                font-medium rounded-full flex items-center justify-center cursor-pointer hover:scale-110 transition-all duration-300 
+                ${navState 
+                  ?'bg-slate-900 text-slate-100 shadow-slate-900'
+                  :'bg-white text-slate-900 shadow-slate-100' }`}>
+                {totalLikeQty}
+              </div>
+            </button>
+            
           </li>
           <li className='grid items-center'>
             <button type='button' onClick={onCartToggle} className='border-none outline-none active:scale-110 transition-all duration-300 relative'>

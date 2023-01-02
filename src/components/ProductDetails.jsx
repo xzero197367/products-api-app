@@ -5,6 +5,8 @@ import axios from 'axios';
 import {HeartIcon, ShoppingBagIcon} from "@heroicons/react/24/outline/index.js";
 import {useDispatch} from "react-redux";
 import {setAddItemToCart, setOpenCart} from "../app/CartSlice.js";
+import { setAddItemToLike } from '../app/likeSlice.js';
+
 
 const ProductDetails = () => {
   const [product, setProduct] = useState({})
@@ -15,6 +17,11 @@ const ProductDetails = () => {
   const onAddToCart = ()=>{
     const item = {...product, cartQuantity:1}
     dispatch(setAddItemToCart(item))
+  }
+
+  const onAddToLike = ()=>{
+    const item = {...product, cartQuantity:1}
+    dispatch(setAddItemToLike(item))
   }
 
   const onCartToggle = ()=>{
@@ -113,7 +120,10 @@ const ProductDetails = () => {
               <ShoppingBagIcon className='icon-style w-6 h-6 text-black' />
             </div>
 
-            <HeartIcon className='icon-style w-6 h-6 text-red-500'/>
+            <div onClick={onAddToLike}>
+              <HeartIcon className={`icon-style w-6 h-6 text-red-500`}/>
+            </div>
+            
           </div>
 
         </div>

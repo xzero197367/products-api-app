@@ -1,14 +1,25 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import ProductCard from './ProductCard'
 import PaginationComponent from './PaginationComponent';
 import {Splide, SplideSlide} from "@splidejs/react-splide";
-import {list} from "postcss";
+import axios from 'axios';
 
-const AllProducts = ({products, pageCount, getPage}) => {
+
+const AllProducts = ({products, pageCount, getPage, changeCategory}) => {
     
-    let categs = []
+    const [categs, setCategs] = useState([])
     const [categ, setCateg] = useState('')
     let listP = [...products]
+
+    // get all products
+    const getCategories = async()=>{
+      const res = await axios.get("https://dummyjson.com/products/categories")
+      setCategs([...res.data, 'All'])
+    }
+    
+    useEffect(() => {
+      getCategories()
+    }, [])
     
 
 
@@ -33,38 +44,46 @@ const AllProducts = ({products, pageCount, getPage}) => {
     <div className='relative flex flex-col'>
 
       <div className='h-32'></div>
-        
-        
 
+      
+        
       <div 
         className='bg-theme clip-path h-[85vh] lg:h-[75vh] md:h-[65vh] sm:h-[55vh] absolute top-0 left-0 right-0 opacity-100 z-5'>
       </div>
-        
-        <div className='flex justify-center items-center gap-0 h-10'>
-            <div onClick={(e)=>{setCateg('')}}
-                 className='m-10 hover:shadow-xl hover:shadow-slate-900 flex h-10 justify-center items-center relative z-100 px-2 py-1 rounded-2xl h-20 bg-blue-500'>
-                All
-            </div>
-        </div>
 
-        <Splide options={splideOptions} className=' relative z-25 opacity-100 flex justify-center items-center'>
-            {
-                products.length ===0?null:products.map((item, i)=>{
-                    if(categs.findIndex((cate)=>cate===item.category) >= 0){
-                        return null
-                    }
-                    categs.push(item.category)
-                    return(
-                        <SplideSlide key={i}>
-                            <div onClick={(e)=>{setCateg(e.target.textContent)}}
-                                className='m-10 hover:shadow-xl hover:shadow-slate-900 flex h-10 justify-center items-center relative z-100 px-2 py-1 rounded-2xl h-20 bg-blue-500'>
-                                {item.category}
-                            </div>
-                        </SplideSlide>
-                    )
-                })
-            }
-        </Splide>
+      <div className='product-date  z-25 opacity-100 absolute right-10 top-[120px]'>
+        <form action="#">
+          <label htmlFor="sort"></label>
+          <select name="sort" id="sort" className='rounded shadow shadow-slate-900 border-none outline-none'>
+            <option value='lowest'>Price(lowest)</option>
+            <option value='lowest'>Price(highest)</option>
+            <option value='lowest'>Date(lowest)</option>
+            <option value='lowest'>Date(highest)</option>
+          </select>
+        </form>
+      </div>
+        
+      {/* <div className='flex justify-center items-center gap-0 h-10'>
+          <div onClick={(e)=>{setCateg('')}}
+              className='m-10 hover:shadow-xl hover:shadow-slate-900 flex h-10 justify-center items-center relative z-100 px-2 py-1 rounded-2xl h-20 bg-blue-500'>
+              All
+          </div>
+      </div> */}
+
+      <Splide options={splideOptions} className=' relative z-25 opacity-100 flex justify-center items-center'>
+          {
+              categs.map((item, i)=>{
+                return(
+                  <SplideSlide key={i}>
+                      <div onClick={(e)=>{changeCategory(e.target.textContent)}}
+                          className='m-10 hover:shadow-xl hover:shadow-slate-900 flex h-10 justify-center items-center relative z-100 px-2 py-1 rounded-2xl h-20 bg-blue-500'>
+                          {item}
+                      </div>
+                  </SplideSlide>
+                )
+              })
+          }
+      </Splide>
 
 
 

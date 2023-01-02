@@ -2,6 +2,7 @@ import React from 'react'
 import { MinusIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/solid'
 import { useDispatch } from 'react-redux';
 import { setDecreaseItemQTY, setIncreaseItemQTY, setRemoveItemFromCart } from '../../app/CartSlice';
+import { Link } from 'react-router-dom';
 
 const CartItem = ({item: {id, brand, category, description, discountPercentage, images, price, rating, stock, thumbnail, title, cartQuantity}}) => {
 
@@ -24,9 +25,12 @@ const CartItem = ({item: {id, brand, category, description, discountPercentage, 
       <div className='flex items-center pag-5'>
         <div className={`bg-gradient-to-b bg-theme shadow shadow-slate-900 relative rounded p-3 hover:scale-105 transition-all duration-75 
         ease-in-out grid items-center`}>
-          <img src={thumbnail} alt={`img/cart-item/${id}`} 
-            className='w-36 h-auto object-fill lg:w-28'
-          />
+
+          <Link to={`/product/${id}`}>
+            <img src={thumbnail} alt={`img/cart-item/${id}`} 
+              className='w-36 h-auto object-fill lg:w-28'
+            />
+          </Link>
           <div className='absolute ring-1 top-1 blur-theme-effect bg-white/80 text-black text-xs px-1 rounded'>
             ${price}
           </div>

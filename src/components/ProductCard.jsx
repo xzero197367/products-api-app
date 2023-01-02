@@ -4,6 +4,7 @@ import { truncate } from 'lodash'
 import { Link } from 'react-router-dom'
 import {useDispatch} from "react-redux";
 import {setAddItemToCart, setOpenCart} from "../app/CartSlice.js";
+import { setAddItemToLike } from '../app/likeSlice.js';
 
 
 //: {id, brand, category, description, discountPercentage, images, price, rating, stock, thumbnail, title}
@@ -13,6 +14,11 @@ const ProductCard = ({product: {id, brand, category, description, discountPercen
   const onAddToCart = ()=>{
     const item = {id, brand, category, description, discountPercentage, images, price, rating, stock, thumbnail, title, cartQuantity:1}
     dispatch(setAddItemToCart(item))
+  }
+
+  const onAddToLike = ()=>{
+    const item = {id, brand, category, description, discountPercentage, images, price, rating, stock, thumbnail, title, cartQuantity:1}
+    dispatch(setAddItemToLike(item))
   }
 
   const onCartToggle = ()=>{
@@ -25,7 +31,7 @@ const ProductCard = ({product: {id, brand, category, description, discountPercen
   return (
     <>
       <div 
-        className='relative flex items-center justify-center flex-col  rounded-xl overflow-hidden shadow shadow-slate-900 hover:shadow-2xl transition-all duration-300 ease-in-out'>
+        className='relative flex items-center justify-center flex-col rounded-xl overflow-hidden shadow shadow-slate-900 hover:shadow-2xl transition-all duration-300 ease-in-out'>
         <Link to={`/product/${id}`}>
           <img src={thumbnail} alt="" className='h-56' />
         </Link>
@@ -60,7 +66,10 @@ const ProductCard = ({product: {id, brand, category, description, discountPercen
               <ShoppingBagIcon className='icon-style w-6 h-6 text-black' />
             </div>
             
-            <HeartIcon className='icon-style w-6 h-6 text-red-500'/>
+            <div onClick={onAddToLike}>
+              <HeartIcon className='icon-style w-6 h-6 text-red-500'/>
+            </div>
+            
           </div>
 
         </div>
